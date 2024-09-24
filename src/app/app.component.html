@@ -1,7 +1,9 @@
 <app-menu>
-  <app-product />
-  <app-product />
-  <app-product />
-  <app-product />
-  <app-product />
+  @if(total === 0) {
+  <p>Votre panier est vide !</p>
+  } @else {
+  <p>Total (panier): {{ total }}€</p>
+  } @for (product of products; track product.id) { @if(product.stock > 0) {
+  <app-product [product]="product" (emitClick)="decrementerStock($event)" />
+  } }
 </app-menu>
