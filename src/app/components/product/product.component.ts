@@ -4,13 +4,14 @@ import { MatCardModule } from '@angular/material/card';
 import { Product } from './product';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { RouterLink } from '@angular/router';
 
 registerLocaleData(localeFr);
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule],
+  imports: [MatCardModule, MatButtonModule, CommonModule, RouterLink],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })

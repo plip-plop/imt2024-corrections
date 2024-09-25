@@ -4,7 +4,11 @@
 >
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title>{{ product.title }} ({{ product.stock }})</mat-card-title>
+      <mat-card-title>
+        <a routerLink="/products/{{ product.id }}">
+          {{ product.title }} ({{ product.stock }})
+        </a>
+      </mat-card-title>
       <mat-card-subtitle>
         {{ product.price | currency : "EUR" : "symbol" : "" : "fr" }}
       </mat-card-subtitle>

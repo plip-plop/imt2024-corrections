@@ -1,57 +1,25 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Product } from '../components/product/product';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  _products: Product[] = [
-    {
-      id: 1,
-      title: 'Grand prix de Belcastel',
-      description:
-        "Faites avancer votre animal en le nourrissant et ainsi tenter de remporter la course du chaudron d'or !",
-      photo: 'img/belcastel-xl.png',
-      price: 50,
-      stock: 2,
-    },
-    {
-      id: 2,
-      title: 'Dungeon Petz',
-      description:
-        "Devenez chef des diablotins qui viennent de lancer une nouvelle entreprise : élevage d'animaux de compagnie.",
-      photo: 'img/dungeon-petz-xl.png',
-      price: 55,
-      stock: 2,
-    },
-    {
-      id: 3,
-      title: 'Heat',
-      description:
-        "Préparez-vous à plonger dans l'ambiance des courses automobiles des sixties avec Heat !",
-      photo: 'img/heat-xl.png',
-      price: 60,
-      stock: 1,
-    },
-    {
-      id: 4,
-      title: 'Terraforming Mars',
-      description:
-        'Dans Terraforming Mars, de puissantes corporations travaillent pour rendre la Planète Rouge habitable.',
-      photo: 'img/terraforming-mars-xl.png',
-      price: 65,
-      stock: 5,
-    },
-  ];
+  _products: Product[] = [];
 
-  constructor() {}
+  private readonly http = inject(HttpClient);
 
   getProducts(): Product[] {
     return this._products;
   }
 
-  getProduct(idProduct: number): Product | undefined {
-    return this._products.find(({ id }) => (id = idProduct));
+  getProduct(idProduct: number): Observable<Product> {
+    return this.http.get<Product>(
+      `http://localhost:8080/api/products/${idProduct}`
+    );
   }
 
   decreaseProduct(idProduct: number) {
@@ -59,5 +27,15 @@ export class ProductService {
     if (produitRecherche?.stock) {
       produitRecherche.stock--;
     }
+  }
+
+  initProducts(): Observable<Product[]> {
+    return this.http
+      .get<Product[]>('http://localhost:8080/api/products')
+      .pipe(tap((products) => (this._products = products)));
+  }
+
+  reinitialiser(): Observable<boolean> {
+    return this.http.get<boolean>('http://localhost:8080/reset');
   }
 }
