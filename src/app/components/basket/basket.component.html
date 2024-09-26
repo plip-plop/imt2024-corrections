@@ -1,0 +1,48 @@
+<form #checkoutForm="ngForm" (ngSubmit)="commander(checkoutForm.value)">
+  <div>
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="checkoutForm.invalid"
+    >
+      Soumettre
+    </button>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input ngModel matInput name="name" #nameModel="ngModel" required />
+      @if(nameModel.touched && nameModel.errors) {
+      <mat-error>Ce champ est obligatoire</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Adresse</mat-label>
+      <input ngModel matInput name="address" #addressModel="ngModel" required />
+      @if(addressModel.touched && addressModel.errors) {
+      <mat-error>Ce champ est obligatoire</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Carte de crédit</mat-label>
+      <input
+        ngModel
+        matInput
+        name="creditCard"
+        #creditCardModel="ngModel"
+        required
+        pattern="^[0-9]{6}$"
+      />
+      @if(creditCardModel.touched && creditCardModel.getError('required')) {
+      <mat-error>Ce champ est obligatoire</mat-error>
+      } @if(creditCardModel.touched && creditCardModel.getError('pattern')) {
+      <mat-error>Exactement 6 chiffres</mat-error>
+      }
+    </mat-form-field>
+  </div>
+</form>
